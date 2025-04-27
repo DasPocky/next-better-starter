@@ -25,3 +25,11 @@ export async function signUpAction(
 
   redirect('/dashboard');
 }
+
+export async function signOutAction() {
+
+  await auth.api.signOut({ headers: await headers() });
+
+  redirect('/');
+  
+}

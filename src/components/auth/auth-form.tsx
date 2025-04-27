@@ -1,35 +1,37 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { z, ZodTypeAny } from 'zod';
+import { useForm, type DefaultValues } from 'react-hook-form';
+import { z, type ZodTypeAny } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form } from '@/components/ui/form';
 import {
   Card,
-  CardContent,
   CardHeader,
   CardTitle,
+  CardContent,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Form } from '@/components/ui/form';
 import { ReactNode } from 'react';
 
 type Props<T extends ZodTypeAny> = {
   title: string;
   schema: T;
+  /** Leere Strings als Default halten die Inputs von Anfang an „controlled“ */
+  defaultValues?: DefaultValues<z.infer<T>>;
   onSubmit: (values: z.infer<T>) => Promise<void>;
-  children: (
-    control: ReturnType<typeof useForm>['control'],
-  ) => ReactNode;
+  children: (control: ReturnType<typeof useForm>['control']) => ReactNode;
 };
 
 export function AuthForm<T extends ZodTypeAny>({
   title,
   schema,
+  defaultValues,
   onSubmit,
   children,
 }: Props<T>) {
   const form = useForm<z.infer<T>>({
     resolver: zodResolver(schema),
+    defaultValues,
   });
 
   return (
@@ -37,6 +39,7 @@ export function AuthForm<T extends ZodTypeAny>({
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
+
       <CardContent>
         <Form {...form}>
           <form
@@ -44,6 +47,7 @@ export function AuthForm<T extends ZodTypeAny>({
             className="space-y-4"
           >
             {children(form.control)}
+
             <Button type="submit" className="w-full">
               Weiter
             </Button>

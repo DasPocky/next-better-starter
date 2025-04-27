@@ -10,6 +10,7 @@ export function SignUpForm() {
     <AuthForm
       title="Registrieren"
       schema={signUpSchema}
+      defaultValues={{ name: '', email: '', password: '' }}
       onSubmit={signUpAction}
     >
       {control => <SignUpFields control={control} />}

@@ -24,7 +24,7 @@ Ein **vollwertiges Boiler‑plate** für moderne Web‑Apps mit dem Next.js 15�
 ## 🚀 Quick Start
 
 ```bash
-git clone https://github.com/YOUR_GITHUB_USERNAME/nextjs-starter.git
+git clone https://github.com/DasPocky/next-better-starter.git
 cd nextjs-starter
 pnpm install                 # Abhängigkeiten holen
 cp .env.example .env         # Secrets eintragen

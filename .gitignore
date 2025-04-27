@@ -1,56 +1,66 @@
 # ─────────────────────────────────────────────
-#  Node / pnpm
+#  Logs & runtime data
+# ─────────────────────────────────────────────
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+lerna-debug.log*
+report.*.json
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# ─────────────────────────────────────────────
+#  Dependency directories
 # ─────────────────────────────────────────────
 node_modules/
 .pnpm-store/
 .pnp.*
-*.tgz
-# pnpm-Lockfile soll versioniert bleiben!
+.turbo/
 
 # ─────────────────────────────────────────────
-#  Next.js build-Artefakte
+#  Build output
 # ─────────────────────────────────────────────
+dist/
+build/
 .next/
 out/
 
 # ─────────────────────────────────────────────
-#  Drizzle ORM
+#  Drizzle ORM (optional snapshots) – keep migrations!
 # ─────────────────────────────────────────────
-# Migrationen im Ordner drizzle/ **nicht** ignorieren!
-drizzle/**/meta/            # optionale Snapshots, falls ihr sie nicht tracken wollt
-drizzle/**/*.tmp            # evtl. temporäre Files bei CI-Jobs
+drizzle/**/meta/
+drizzle/**/*.tmp
 
 # ─────────────────────────────────────────────
-#  Environment & Secrets
+#  Environment & secrets
 # ─────────────────────────────────────────────
-.env*                       # .env, .env.local, .env.production …
-!.env.example               # Beispiel-Datei im Repo lassen
+.env*
+!.env.example
 
 # ─────────────────────────────────────────────
-#  Log & Debug
-# ─────────────────────────────────────────────
-npm-debug.log*
-pnpm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-*.log
-*.log.*
-
-# ─────────────────────────────────────────────
-#  Betriebssystem-Kleinkram
-# ─────────────────────────────────────────────
-.DS_Store
-Thumbs.db
-.idea/
-.vscode/*
-!.vscode/extensions.json    # empfohlene Extensions dürfen ins Repo
-!.vscode/settings.json      # projekt-spezifische Settings (falls gewünscht)
-
-# ─────────────────────────────────────────────
-#  Tests & Coverage
+#  Testing & coverage
 # ─────────────────────────────────────────────
 coverage/
 *.lcov
+__snapshots__/
+
+# ─────────────────────────────────────────────
+#  IDE / Editor metadata
+# ─────────────────────────────────────────────
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# ─────────────────────────────────────────────
+#  OS files
+# ─────────────────────────────────────────────
+.DS_Store
+Thumbs.db
 
 # ─────────────────────────────────────────────
 #  Misc

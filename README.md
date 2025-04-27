@@ -1,4 +1,4 @@
-# Next.js 15 Starter – Auth · Drizzle · Tailwind
+# Next.js 15 Starter – Better Auth · Drizzle · Tailwind
 
 [![CI](https://github.com/YOUR_GITHUB_USERNAME/nextjs-starter/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_GITHUB_USERNAME/nextjs-starter/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)

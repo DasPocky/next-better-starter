@@ -14,7 +14,9 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint"
+		"lint": "next lint",
+		"db:gen":  "pnpm exec drizzle-kit generate",
+  		"db:push": "pnpm exec drizzle-kit push"
 	},
 	"dependencies": {
 		"@tailwindcss/postcss": "^4.1.4",

@@ -23,23 +23,7 @@ Ein **vollwertiges Next.js‑Boiler‑plate** (App Router) mit Better‑Auth, D
 
 ## 🚀 Schnellstart
 
-```bash
-# neues Projekt aus Template erstellen
-npx degit your-org/next-better-auth-starter my-app
-cd my-app
-pnpm install
-
-# .env anlegen und Variablen setzen
-cp .env.example .env
-
-# erste Migration in die Datenbank spielen
-pnpm db:push
-
-# Entwicklungsserver starten
-pnpm dev
-```
-
-> **Voraussetzungen:** Node ≥ 20 (LTS), eine PostgreSQL‑Datenbank oder ein kompatibler Cloud‑Dienst.
+Hier folgt Schnellstart
 
 ---
 

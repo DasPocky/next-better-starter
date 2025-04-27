@@ -1,3 +1,59 @@
-node_modules
-.next
-.env
+# ─────────────────────────────────────────────
+#  Node / pnpm
+# ─────────────────────────────────────────────
+node_modules/
+.pnpm-store/
+.pnp.*
+*.tgz
+# pnpm-Lockfile soll versioniert bleiben!
+
+# ─────────────────────────────────────────────
+#  Next.js build-Artefakte
+# ─────────────────────────────────────────────
+.next/
+out/
+
+# ─────────────────────────────────────────────
+#  Drizzle ORM
+# ─────────────────────────────────────────────
+# Migrationen im Ordner drizzle/ **nicht** ignorieren!
+drizzle/**/meta/            # optionale Snapshots, falls ihr sie nicht tracken wollt
+drizzle/**/*.tmp            # evtl. temporäre Files bei CI-Jobs
+
+# ─────────────────────────────────────────────
+#  Environment & Secrets
+# ─────────────────────────────────────────────
+.env*                       # .env, .env.local, .env.production …
+!.env.example               # Beispiel-Datei im Repo lassen
+
+# ─────────────────────────────────────────────
+#  Log & Debug
+# ─────────────────────────────────────────────
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+*.log.*
+
+# ─────────────────────────────────────────────
+#  Betriebssystem-Kleinkram
+# ─────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json    # empfohlene Extensions dürfen ins Repo
+!.vscode/settings.json      # projekt-spezifische Settings (falls gewünscht)
+
+# ─────────────────────────────────────────────
+#  Tests & Coverage
+# ─────────────────────────────────────────────
+coverage/
+*.lcov
+
+# ─────────────────────────────────────────────
+#  Misc
+# ─────────────────────────────────────────────
+*.swp
+*.swo

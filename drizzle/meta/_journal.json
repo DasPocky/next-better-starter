@@ -8,6 +8,13 @@
       "when": 1745789113073,
       "tag": "0000_old_banshee",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1745791808570,
+      "tag": "0001_opposite_agent_zero",
+      "breakpoints": true
     }
   ]
 }

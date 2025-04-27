@@ -4,6 +4,12 @@
 	"description": "Logistik Simulator - A simulation game for logistics enthusiasts",
 	"author": "Björn End",
 	"license": "MIT",
+	"pnpm": {
+		"overrides": {
+			"@esbuild-kit/esm-loader": "npm:tsx@^4.7.0",
+			"@esbuild-kit/core-utils": "npm:tsx@^4.7.0"
+		}
+	},
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build",
@@ -12,15 +18,21 @@
 	},
 	"dependencies": {
 		"@tailwindcss/postcss": "^4.1.4",
+		"better-auth": "^1.2.7",
+		"drizzle-orm": "^0.43.1",
 		"next": "^15.3.1",
+		"pg": "^8.15.6",
 		"postcss": "^8.5.3",
 		"react": "^19.1.0",
 		"react-dom": "^19.1.0",
 		"tailwindcss": "^4.1.4"
 	},
 	"devDependencies": {
+		"@better-auth/cli": "^1.2.7",
 		"@types/node": "latest",
+		"@types/pg": "^8.11.14",
 		"@types/react": "19.1.2",
+		"drizzle-kit": "^0.31.0",
 		"eslint": "^9.25.1",
 		"eslint-config-next": "15.3.1",
 		"typescript": "5.8.3"

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Route } from 'next';
+import type { Route } from 'next';
 import { SignUpForm } from '@/components/auth/signup-form';
 
 export default function SignUpPage() {

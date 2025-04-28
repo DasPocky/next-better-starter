@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Route } from 'next';
+import type { Route } from 'next';
 import {
   Card,
   CardContent,
@@ -17,12 +17,10 @@ export default function LandingPage() {
       <Card className="w-full max-w-lg">
         <CardHeader className="text-center">
           <CardTitle className="text-4xl">{APP_NAME}</CardTitle>
-
           <CardDescription>
             Willkommen! Melde dich an oder registriere dich, um loszulegen.
           </CardDescription>
         </CardHeader>
-
         <CardContent>
           <div className="flex justify-center gap-4">
             <Button asChild>

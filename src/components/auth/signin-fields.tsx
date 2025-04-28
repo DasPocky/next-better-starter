@@ -1,15 +1,10 @@
 'use client';
 
 import { Input } from '@/components/ui/input';
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-} from '@/components/ui/form';
-import { Control } from 'react-hook-form';
+import { FormField, FormItem, FormLabel, FormControl } from '@/components/ui/form';
+import type { Control, FieldValues } from 'react-hook-form';
 
-export function SignInFields({ control }: { control: Control<any> }) {
+export function SignInFields({ control }: { control: Control<FieldValues> }) {
   return (
     <>
       <FormField

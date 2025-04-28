@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Route } from 'next';
+import type { Route } from 'next';
 import { SignInForm } from '@/components/auth/signin-form';
 
 export default function SignInPage() {

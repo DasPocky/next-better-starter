@@ -33,10 +33,10 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready                 # Nutzerangabe ist unnötig
+          --health-cmd "pg_isready -U postgres"
           --health-interval 10s
           --health-timeout 5s
-          --health-start-period 15s               # gibt Postgres etwas Vorlauf
+          --health-start-period 15s
           --health-retries 5
 
     env:

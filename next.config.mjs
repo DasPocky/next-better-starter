@@ -2,17 +2,12 @@ import 'dotenv/config';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   reactStrictMode: true,
 
-  experimental: {
-    typedRoutes: true,
-    serverActions: {
-      allowedOrigins: [],
-    },
-  },
+  experimental: { typedRoutes: true, serverActions: { allowedOrigins: [] } },
 
   images: {
-    // Für Avatar-URLs o. Ä. aus deinem Auth-Flow
     domains: ['localhost'],
   },
   eslint:   { ignoreDuringBuilds: true },

@@ -78,9 +78,6 @@ jobs:
       - name: Build app
         run: pnpm build
 
-      - name: Export static files
-        run: pnpm next export
-
       # ➜ statisches Ergebnis hochladen
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

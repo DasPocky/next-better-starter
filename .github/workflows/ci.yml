@@ -12,15 +12,20 @@ permissions:             # nötig für Deploy- & PR-Schritte
   deployments: write
   pull-requests: write
 
-env:                     # globale Secrets aus den Repo-Settings
+# globale Variablen – wirken in allen Jobs
+env:
   BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
+  NODE_ENV: production          # echte Prod-Builds
+  NEXT_TELEMETRY_DISABLED: 1    # keine Telemetry-Prompts
 
 jobs:
   build-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 20         # bricht festhängende Builds klar ab
+
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
+        node-version: [20.x]    # empfohlenes LTS; bei Bedarf erweitern
 
     # ➜ eigener Postgres-Service
     services:
@@ -40,7 +45,6 @@ jobs:
           --health-retries 5
 
     env:
-      NODE_ENV: test
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/app
 
     steps:
@@ -56,17 +60,16 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: pnpm
 
-      - name: Install deps
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       # ➜ Secret on-the-fly erstellen (nur im CI-Run)
       - name: Generate BETTER_AUTH_SECRET when missing
-        id: secret
         run: |
           if [ -z "${{ secrets.BETTER_AUTH_SECRET }}" ]; then
-            echo "BETTER_AUTH_SECRET=$(openssl rand -hex 32)" >> $GITHUB_ENV
+            echo "BETTER_AUTH_SECRET=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
           else
-            echo "BETTER_AUTH_SECRET=${{ secrets.BETTER_AUTH_SECRET }}" >> $GITHUB_ENV
+            echo "BETTER_AUTH_SECRET=${{ secrets.BETTER_AUTH_SECRET }}" >> "$GITHUB_ENV"
           fi
 
       - name: Run migrations
@@ -75,8 +78,12 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-      - name: Build app
-        run: pnpm build
+      - name: Build & export app
+        env:
+          SKIP_DB: "true"        # verhindert offene PG-Handles während Build
+        run: |
+          pnpm build             # Next-Build inkl. Static-Export
+          pnpm exec next export -o out
 
       # ➜ statisches Ergebnis hochladen
       - name: Upload Pages artifact

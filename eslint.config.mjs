@@ -1,11 +1,16 @@
-import eslint from '@eslint/js';
-import tseslint from '@typescript-eslint/eslint-plugin';
-import next from 'eslint-plugin-next';
+// eslint.config.mjs  (ESLint v9 FlatConfig)
+import js from '@eslint/js'
+import { FlatCompat } from '@eslint/eslintrc'
+import ts from '@typescript-eslint/eslint-plugin'
+
+const compat = new FlatCompat({ baseDirectory: import.meta.dirname })
 
 export default [
-  ...eslint.configs.recommended,
+  ...compat.config({ extends: ['next/core-web-vitals', 'next/typescript'] }), // :contentReference[oaicite:6]{index=6}
+
+  ...js.configs.recommended,
   {
-    plugins: { '@typescript-eslint': tseslint },
+    plugins: { '@typescript-eslint': ts },
     languageOptions: {
       parserOptions: { project: './tsconfig.json' },
     },
@@ -14,5 +19,4 @@ export default [
       '@typescript-eslint/consistent-type-imports': 'error',
     },
   },
-  ...next.config({ extends: ['next/core-web-vitals'] }),
-];
+]

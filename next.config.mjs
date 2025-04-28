@@ -7,10 +7,8 @@ const nextConfig = {
 
   experimental: { typedRoutes: true, serverActions: { allowedOrigins: [] } },
 
-  images: {
-    domains: ['localhost'],
-  },
-  eslint:   { ignoreDuringBuilds: true },
+  images: { domains: ['localhost'] },
+  eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
 };
 

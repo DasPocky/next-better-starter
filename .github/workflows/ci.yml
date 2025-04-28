@@ -3,54 +3,111 @@ name: CI
 on:
   push:
     branches: [main]
-  pull_request:
+  pull_request:          # erzeugt Preview-Deployments
 
-# 👉 Secrets stehen zentral bereit und gelten für alle Steps
-env:
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
-  BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
+permissions:             # nötig für Deploy- & PR-Schritte
+  contents: read
+  id-token: write
+  pages: write
+  deployments: write
+  pull-requests: write
+
+env:                     # globale Secrets aus den Repo-Settings
   BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
 
 jobs:
-  build:
+  build-test:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [18.x, 20.x]
-    runs-on: ubuntu-latest
 
+    # ➜ eigener Postgres-Service
     services:
       postgres:
         image: postgres:16
         env:
+          POSTGRES_USER:     postgres
           POSTGRES_PASSWORD: postgres
+          POSTGRES_DB:       app
         ports:
           - 5432:5432
         options: >-
-          --health-cmd='pg_isready -U postgres'
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
+          --health-cmd pg_isready                 # Nutzerangabe ist unnötig
+          --health-interval 10s
+          --health-timeout 5s
+          --health-start-period 15s               # gibt Postgres etwas Vorlauf
+          --health-retries 5
+
+    env:
+      NODE_ENV: test
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/app
 
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v3   # schneller mit Cache
         with:
           version: 9
+          run_install: false
 
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
+          cache: pnpm
 
-      - name: Install dependencies
+      - name: Install deps
         run: pnpm install --frozen-lockfile
 
-      - name: Generate SQL migrations (Drizzle)
-        run: pnpm db:gen
+      # ➜ Secret on-the-fly erstellen (nur im CI-Run)
+      - name: Generate BETTER_AUTH_SECRET when missing
+        id: secret
+        run: |
+          if [ -z "${{ secrets.BETTER_AUTH_SECRET }}" ]; then
+            echo "BETTER_AUTH_SECRET=$(openssl rand -hex 32)" >> $GITHUB_ENV
+          else
+            echo "BETTER_AUTH_SECRET=${{ secrets.BETTER_AUTH_SECRET }}" >> $GITHUB_ENV
+          fi
+
+      - name: Run migrations
+        run: pnpm db:push
 
       - name: Lint
         run: pnpm lint
 
-      - name: Build
+      - name: Build app
         run: pnpm build
+
+      - name: Export static files
+        run: pnpm next export
+
+      # ➜ statisches Ergebnis hochladen
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  # separater Job – sorgt für saubere Deploy-Historie
+  deploy-preview:
+    if: github.event_name == 'pull_request'
+    needs: build-test
+    runs-on: ubuntu-latest
+    environment:
+      name: preview
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    permissions:
+      pages: write
+      id-token: write
+      pull-requests: write
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4   # liefert page_url-Output
+
+      - name: Post preview link as PR comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: |
+            ✅ **Preview bereit:** ${{ steps.deploy.outputs.page_url }}

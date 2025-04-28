@@ -1,11 +1,15 @@
-import { drizzle } from "drizzle-orm/node-postgres";
-import pg from "pg";
+// src/db/index.ts
+import { drizzle } from 'drizzle-orm/node-postgres';
+import pg from 'pg';
+import * as schema from '@/db/auth-schema';
 
-/* alle Tabellen stammen jetzt aus auth-schema.ts */
-import * as schema from "@/db/auth-schema";
+const g = globalThis as unknown as { db?: ReturnType<typeof drizzle> };
 
-export const pool = new pg.Pool({
-  connectionString: process.env.DATABASE_URL!,
-});
-
-export const db = drizzle(pool, { schema });
+export const db =
+  g.db ??
+  (() => {
+    if (process.env.BUILD_PHASE) return undefined;      //  <-- build-safe gate
+    const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL! });
+    g.db = drizzle(pool, { schema });
+    return g.db;
+  })();

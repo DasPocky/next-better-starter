@@ -3,38 +3,34 @@ name: CI
 on:
   push:
     branches: [main]
-  pull_request:          # erzeugt Preview-Deployments
+  pull_request:
 
-permissions:             # nötig für Deploy- & PR-Schritte
+permissions:
   contents: read
   id-token: write
   pages: write
   deployments: write
   pull-requests: write
 
-# globale Variablen – wirken in allen Jobs
 env:
   BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
-  NODE_ENV: production          # echte Prod-Builds
-  NEXT_TELEMETRY_DISABLED: 1    # keine Telemetry-Prompts
+  NEXT_TELEMETRY_DISABLED: 1
 
 jobs:
   build-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 20         # bricht festhängende Builds klar ab
-
+    timeout-minutes: 20
     strategy:
       matrix:
-        node-version: [20.x]    # empfohlenes LTS; bei Bedarf erweitern
+        node-version: [20.x]
 
-    # ➜ eigener Postgres-Service
     services:
       postgres:
         image: postgres:16
         env:
-          POSTGRES_USER:     postgres
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB:       app
+          POSTGRES_DB: app
         ports:
           - 5432:5432
         options: >-
@@ -50,7 +46,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v3   # schneller mit Cache
+      - uses: pnpm/action-setup@v3
         with:
           version: 9
           run_install: false
@@ -60,10 +56,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: pnpm
 
-      - name: Install dependencies
+      - name: Install dependencies (incl. devDeps)
+        env:
+          PNPM_CONFIG_PRODUCTION: false
         run: pnpm install --frozen-lockfile
 
-      # ➜ Secret on-the-fly erstellen (nur im CI-Run)
       - name: Generate BETTER_AUTH_SECRET when missing
         run: |
           if [ -z "${{ secrets.BETTER_AUTH_SECRET }}" ]; then
@@ -80,18 +77,16 @@ jobs:
 
       - name: Build & export app
         env:
-          SKIP_DB: "true"        # verhindert offene PG-Handles während Build
+          BUILD_PHASE: "true"
         run: |
-          pnpm build             # Next-Build inkl. Static-Export
+          pnpm build
           pnpm exec next export -o out
 
-      # ➜ statisches Ergebnis hochladen
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: out
 
-  # separater Job – sorgt für saubere Deploy-Historie
   deploy-preview:
     if: github.event_name == 'pull_request'
     needs: build-test
@@ -108,7 +103,7 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deploy
-        uses: actions/deploy-pages@v4   # liefert page_url-Output
+        uses: actions/deploy-pages@v4
 
       - name: Post preview link as PR comment
         uses: marocchino/sticky-pull-request-comment@v2

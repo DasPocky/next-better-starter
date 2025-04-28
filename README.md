@@ -76,17 +76,6 @@ Secrets wie `DATABASE_URL` oder `BETTER_AUTH_SECRET` werden in den **Repository�
 
 ---
 
-## 👫 Contributing
-
-1. Fork & Branch (`feat/my-feature`)  
-2. `pnpm install`  
-3. Tests & Linting (`pnpm lint`)  
-4. Pull‑Request inklusive **Issue‑Referenz** eröffnen
-
-Automatisierte Checks (CI) müssen grün sein, bevor der Merge möglich ist.
-
----
-
 ## 📦 Deployment
 
 | Plattform | Status |

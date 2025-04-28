@@ -1,4 +1,4 @@
-// eslint.config.mjs  (ESLint v9 FlatConfig)
+// eslint.config.mjs  (ESLint v9 Flat-Config)
 import js from '@eslint/js'
 import { FlatCompat } from '@eslint/eslintrc'
 import ts from '@typescript-eslint/eslint-plugin'
@@ -6,9 +6,10 @@ import ts from '@typescript-eslint/eslint-plugin'
 const compat = new FlatCompat({ baseDirectory: import.meta.dirname })
 
 export default [
-  ...compat.config({ extends: ['next/core-web-vitals', 'next/typescript'] }), // :contentReference[oaicite:6]{index=6}
+  ...compat.config({ extends: ['next/core-web-vitals', 'next/typescript'] }),
 
-  ...js.configs.recommended,
+  js.configs.recommended,
+
   {
     plugins: { '@typescript-eslint': ts },
     languageOptions: {

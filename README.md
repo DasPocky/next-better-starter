@@ -1,6 +1,6 @@
 # Next.js 15 Starter – Better Auth · Drizzle · Tailwind
 
-[![CI](https://github.com/YOUR_GITHUB_USERNAME/nextjs-starter/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_GITHUB_USERNAME/nextjs-starter/actions/workflows/ci.yml)
+[![CI](https://github.com/DasPocky/next-better-starter/actions/workflows/ci.yml/badge.svg)](https://github.com/DasPocky/next-better-starter/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Ein **vollwertiges Boiler‑plate** für moderne Web‑Apps mit dem Next.js 15 App Router, Better‑Auth, Drizzle ORM, Tailwind CSS v4 und shadcn/ui‑Komponenten. Klone das Repo, fülle deine `.env` aus und starte in wenigen Minuten deine eigene Anwendung.
@@ -59,6 +59,13 @@ pnpm dev                     # Lokal starten
 | `APP_NAME` | Anzeigename der Anwendung (optional) |
 
 Alle Variablen kommen in **`.env`** (per `.gitignore` ausgeschlossen). Siehe `.env.example`.
+
+---
+
+### 🔐 GitHub Actions Secrets
+
+> Speichere sensible Variablen **nur** in den Repository‑**Settings → Secrets → Actions**.  
+> `ci.yml` lädt sie automatisch in den Workflow‑Run (siehe `env:`‑Block).
 
 ---
 

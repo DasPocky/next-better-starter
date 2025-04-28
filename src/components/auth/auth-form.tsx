@@ -1,7 +1,9 @@
 'use client';
 
-import { useForm, type DefaultValues, type Control, type FieldValues } from 'react-hook-form';
-import { z, type ZodTypeAny } from 'zod';
+import { useForm } from 'react-hook-form';
+import type { DefaultValues, Control, FieldValues } from 'react-hook-form';
+import type * as z from 'zod';
+import type { ZodTypeAny } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,8 +14,8 @@ type Props<T extends ZodTypeAny> = {
   title: string;
   schema: T;
   defaultValues?: DefaultValues<z.infer<T>>;
-  onSubmit: (_values: z.infer<T>) => Promise<void>;
-  children: (control: Control<FieldValues>) => ReactNode;
+  onSubmit: (_: z.infer<T>) => Promise<void>;
+  children: (_control: Control<FieldValues>) => ReactNode;
 };
 
 export function AuthForm<T extends ZodTypeAny>({

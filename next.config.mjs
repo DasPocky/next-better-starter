@@ -1,21 +1,18 @@
-import 'dotenv/config';
+import 'dotenv/config'
 
 const imageDomains = (process.env.NEXT_IMAGE_DOMAINS ?? 'localhost')
   .split(',')
-  .map((d) => d.trim())
-  .filter(Boolean);
+  .map(d => d.trim())
+  .filter(Boolean)
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  output: 'export',
+export default {
+  output: 'standalone',
   reactStrictMode: true,
   experimental: {
     typedRoutes: true,
-    serverActions: { allowedOrigins: [] },
+    serverActions: { allowedOrigins: [] }
   },
   images: { domains: imageDomains },
   eslint: { ignoreDuringBuilds: true },
-  typescript: { ignoreBuildErrors: true },
-};
-
-export default nextConfig;
+  typescript: { ignoreBuildErrors: true }
+}
